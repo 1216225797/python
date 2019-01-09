@@ -86,4 +86,6 @@
                     name = "张三"
                     # __age是私有成员
                     __age = 18
+                t = Temp()
     - Python的私有并不是真的私有，是一种称为name mangling的改名策略
+    可以使用 对象._classname_attributename(例如：t._Temp__age)访问
