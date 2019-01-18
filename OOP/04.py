@@ -117,10 +117,11 @@ class E():
 
         return self.name > other.name
 
-
+    # 这要注意因为把对象实例作为字符串进行比较
+    # 所以要用到__str__函数
     def __str__(self):
-        
-        return str(self)
+
+        return self.name
 
 
 
