@@ -82,4 +82,3 @@ class GameNum():
                 print("输入有误，请重新输入")
 
 num = GameNum()
-num.game()
