@@ -26,7 +26,7 @@ class SetInfo():
     # return self.s - s2
 
     def union_value(self, s2):
-        # 取交集的另外一种方法是用 | 符号
+        # 取并集的另外一种方法是用 | 符号
         return self.s.union(s2)
     # return self.s | s2
 
