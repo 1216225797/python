@@ -53,40 +53,8 @@ class User():
         self.role = role
 
 
-# 声明成全局变量是因为每次新建用户时编号都要+1，如果声明在类中创建实例时，该值永远都是1，不会增加
-tea_num = 00
-
-
-class Teacher(User):
-
-    def __init__(self, name, age, role, cap):
-        User.__init__(self, name, age, role)
-        global tea_num
-        tea_num += 1
-        # zfill的用法：当字符不足两位数时，强制补充为两位，默认为0，且只能对字符串使用
-        tea_id = cap.school_name + 'T' + str(tea_num).zfill(2)
-        # tea = self.teacher.append(name)
-
-        print("欢迎{0}老师的加入！,你的编号是{1}".format(name, tea_id))
-
-    def tea_info(self, course):
-        print("大家好，我是{0}老师，我教的是{1}{2}课程".format(self.name, course.course, course.code))
-
-    def work(self, date, mark, stu):
-        # print(stu.mark_list)
-        # 集合添加值的操作:集合.['键'] = 值
-        stu.mark_list["Day" + date] = mark
-
-
-# 这里注意cap是对象，把对象当做参数传入，可以调用对象的成员属性
-tea = Teacher("小周", 100, "teacher", cap)
-tea.tea_info(cap)
-tea.work('2', 'A', stu)
-tea.work('2', 'B', stu1)
-
-
-
 stu_num = 00
+
 
 class Student(User):
 
@@ -109,7 +77,41 @@ class Student(User):
             print(i)
 
 
+# 声明成全局变量是因为每次新建用户时编号都要+1，如果声明在类中创建实例时，该值永远都是1，不会增加
+tea_num = 00
+
+
+class Teacher(User):
+
+    def __init__(self, name, age, role, cap):
+        User.__init__(self, name, age, role)
+        global tea_num
+        tea_num += 1
+        # zfill的用法：当字符不足两位数时，强制补充为两位，默认为0，且只能对字符串使用
+        tea_id = cap.school_name + 'T' + str(tea_num).zfill(2)
+        # tea = self.teacher.append(name)
+
+        print("欢迎{0}老师的加入！,你的编号是{1}".format(name, tea_id))
+
+    def tea_info(self, course):
+        print("大家好，我是{0}老师，我教的是{1}{2}课程".format(self.name, course.course, course.code))
+
+    def work(self, date, mark, obj):
+        # print(stu.mark_list)
+        # 集合添加值的操作:集合.['键'] = 值
+        obj.mark_list["Day" + date] = mark
+
+
+# 这里注意cap是对象，把对象当做参数传入，可以调用对象的成员属性
+# 注意调用的顺序问题
+tea = Teacher("小周", 100, "teacher", cap)
 stu = Student("小高", 26, "student", cap)
 stu1 = Student("小王", 31, "student", cap)
+tea.tea_info(cap)
+tea.work('2', 'A', stu)
+tea.work('2', 'B', stu1)
 stu.stu_info(cap)
 stu.look()
+stu1.look()
+
+# tea.work(stu1,'B')
