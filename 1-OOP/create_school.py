@@ -98,7 +98,7 @@ class Teacher(User):
 
     def work(self, date, mark, obj):
         # print(stu.mark_list)
-        # 集合添加值的操作:集合.['键'] = 值
+        # 集合添加键和值的操作:集合['键'] = 值
         obj.mark_list["Day" + date] = mark
 
 

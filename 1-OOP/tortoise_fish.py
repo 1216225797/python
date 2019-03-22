@@ -25,7 +25,7 @@ class Tortoise():
 
     def move(self):
         # 移动距离为负数代表可以往反方向移动
-
+        # choice() 方法返回一个列表，元组或字符串的随机项
         new_x = r.choice([1, 2, -1, -2]) + self.x
         new_y = r.choice([1, 2, -1, -2]) + self.y
 
@@ -99,7 +99,6 @@ while 1:
             tortoise.eat()
             print("有一条鱼被吃掉了{0}".format(each_fish.move()))
             fish.remove(each_fish)
-
     # if x is not None`是最好的写法，清晰，不会出现错误，以后坚持使用这种写法。
     # 使用if not x这种写法的前提是：必须清楚x等于None,  False, 空字符串"", 0, 空列表[], 空字典{}, 空元组()时对你的判断没有影响才行
 
