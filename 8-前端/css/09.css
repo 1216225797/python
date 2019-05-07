@@ -1,0 +1,16 @@
+.box{
+    width: 300px;
+    height: 200px;
+    border: 3px red solid;
+    box-shadow: 5px 5px 30px 10px black;
+}
+
+.box1{
+    width: 800px;
+    height: 500px;
+    font-size: 30px;
+    color: blueviolet;
+    font-family: "华文行楷";
+    text-align: center;
+    line-height: 40px;
+}

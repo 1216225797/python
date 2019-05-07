@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>浮动_定位</title>
+    <style>
+        /*使用通配符清除默认的内外边距*/
+        *{margin: 0;padding: 0}
+        .box{
+            width: 500px;
+            height: 500px;
+            border: 1px solid red;
+            padding: 200px;
+            position: relative;
+            left: 300px;
+            top: 200px;
+        }
+        .box1{
+            width: 200px;
+            height: 200px;
+            background-color: rebeccapurple;
+            position: absolute;
+            left: 100px;
+            top: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="box1"><h3>hello world!</h3></div>
+    </div>
+</body>
+</html>

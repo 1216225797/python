@@ -1,0 +1,21 @@
+.box{
+     width: 200px;
+    height: 200px;
+    background-color: green;
+}
+/*伪类选择器：hover 鼠标停留在元素上时的样式*/
+.box:hover{
+    /*width: 20px;*/
+    /*height: 20px;*/
+    background-color: pink;
+}
+
+/*伪元素选择器: after before 通过样式在元素中插入内容*/
+/*在元素内容的头部插入内容*/
+.box:before{
+    content: '哇哦，';
+}
+
+.box:after{
+    content: '，嘻嘻嘻';
+}

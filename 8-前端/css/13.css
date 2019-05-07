@@ -1,0 +1,29 @@
+  *{margin: 0;padding: 0}
+div ul li a{
+    font-family: 宋体;
+    font-size: 20px;
+    text-decoration: none;
+    color: azure;
+}
+a:hover{
+     background-color: crimson;
+}
+.box1{
+    list-style: none;
+    /*清除父级元素浮动*/
+    overflow: hidden;
+    position: absolute;
+    top: 13px
+}
+
+div ul li{
+     width: 50px;
+     float: left
+}
+
+.box2{
+    height: 50px;
+    width: 400px;
+    background-color: midnightblue;
+    text-align: center;
+}

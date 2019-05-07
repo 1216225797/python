@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>边框的圆角设置</title>
+    <style>
+        .box{
+            width:200px;
+            height:200px;
+            border:1px solid red;
+            /*
+                border-radius设置圆角
+                给一个值是设置四个角的圆角属性
+                如果给四个值:
+                    第一个值设置的是左上角
+                    第二个值设置的是右上角
+                    第三个值设置的是右下角
+                    第四个值设置的是左下
+                    (顺时针方向)
+                 如果给两个值:
+                    设置对角
+                    第一个只值设置 左上和右下角
+                    第二个值设置的是 右上和左下角
+
+             */
+            border-radius:50%;
+            /*border-radius:10px 30px 50px 70px;*/
+            /*border-radius:10px 70px;*/
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+</body>
+</html>

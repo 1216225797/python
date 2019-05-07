@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择器权重及补充</title>
+    <style>
+        /*这里有两种写法：
+        1.层级选择器，主要应用在父元素下的子元素
+        2.相邻兄弟选择器，使用"+"，选择紧接在另一个元素后的元素，且要有相同的父元素
+        注意：用一个结合符只能选择两个相邻兄弟中的第二个元素，且两个元素必须相邻
+        3.匹配选择器，使用'~'(波浪号)，不用相邻，但必须有相同父元素
+        */
+        .box1:hover ~ .item1{
+            width: 200px;
+            height: 200px;
+            display: block;
+        }
+        .box2:hover ~ .item2{
+            width: 200px;
+            height: 200px;
+            display: block;
+        }
+        .item1, .item2{
+            display: none;
+        }
+        .box1, .box2{
+            text-decoration: none;
+            font-family: "宋体";
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+        <a href="" class="box1">test</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="" class="box2">HAHAHA</a>
+        <img src="./images/IMG_2290.JPG" class="item1"/>
+        <img src="./images/1.png" class="item2"/>
+</body>
+</html>
