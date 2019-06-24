@@ -18,10 +18,12 @@ def main():
     print("All start at:",time.ctime())
     t1 = threading.Thread(target=A, args=("running",))
     t1.start()
+
     t2 = threading.Thread(target=B, args=("eating",))
     t2.start()
-
     t1.join()
+
+
     t2.join()
     print("All end at:",time.ctime())
 

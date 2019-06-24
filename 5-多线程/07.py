@@ -12,4 +12,6 @@ t = threading.Thread(target=funcA, args=())
 # 必须要在启动前设置
 t.setDaemon(True)
 
+t.start()
+
 print("main thread end")
