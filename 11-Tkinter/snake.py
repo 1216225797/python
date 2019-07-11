@@ -161,9 +161,10 @@ class Platform():
         self.score_s = self.cvs.create_text(650, 20, fill="black", text="分数：0")
 
         # 使用多线程从消息队列取数据
-        t = threading.Thread(target=self.main, args=())
-        t.setDaemon(True)
-        t.start()
+        # t = threading.Thread(target=self.main, args=())
+        # t.setDaemon(True)
+        # t.start()
+        self.main()
 
 
     def myquit(self):
@@ -217,7 +218,7 @@ class Platform():
                         print("增加积分")
                         self.cvs.itemconfigure(self.score_s, text="分数：{0}".format(evn["add_points"]))
 
-                    self.queue.task_done()
+                    # self.queue.task_done()
 
                     # 游戏结束
                     if evn.get("game_over"):
