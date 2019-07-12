@@ -1,7 +1,7 @@
 '''
     飞机大战v04
         用面向对象的方式实现
-        此类为所有对象的父类
+        此类为所有对象的基类
 
     参数解释：
         x:锚点x坐标值
@@ -12,13 +12,10 @@
 import random
 import tkinter
 import time
-from configparser import ConfigParser
+from readconfig import myconfig
 
 class AirplaneWar():
     def __init__(self,canvas,x,y,position,tag,width,height):
-        self.conf = ConfigParser()
-        self.conf.read("config.ini", encoding="utf-8")
-
         self.canvas = canvas
         # 锚点坐标
         self.anchor_x = x
@@ -36,17 +33,13 @@ class AirplaneWar():
         self.img_list = []
         # self.hero_img_list = []
         # 各个游戏部件的初始状态
-        self.state = self.conf.getint("game","status_alive")
+        self.state = myconfig.status_alive
         # 默认生命值
-        self.health = self.conf.getint("game","enemy_health")
+        self.health = myconfig.enemy_health
         # 爆炸结束标识
         self.is_explosion = False
-        # 子弹默认移动方向
-        # self.blt_dir = [self.conf.getint("bullet","hero_x_dir"),
-        #                 self.conf.getint("bullet","hero_y_dir")]
 
-
-
+        # 各个点的坐标
         self.nw_pos = self.get_nw_pos()
         self.ne_pos = self.get_ne_pos()
         self.se_pos = self.get_se_pos()
@@ -177,9 +170,9 @@ class AirplaneWar():
     def update_health(self):
         self.health -= 1
         if self.health <= 0:
-            self.state = self.conf.getint("game", "status_dead")
+            self.state = myconfig.status_dead
         else:
-            self.state = self.conf.getint("game", "status_reset")
+            self.state = myconfig.status_reset
 
 
     # 设置生命值

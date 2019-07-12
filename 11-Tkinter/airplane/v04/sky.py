@@ -1,22 +1,23 @@
 '''
     背景图片类
 '''
-from configparser import ConfigParser
+
 import tkinter
 from airplanewar import AirplaneWar
+from readconfig import myconfig
 
 class Sky(AirplaneWar):
     def __init__(self,canvas,x,y,position,tag,width,height):
         super(Sky,self).__init__(canvas,x,y,position,tag,width,height)
 
         # 创建背景图片
-        self.bg_path = self.conf.get("background", "path")
+        self.bg_path = myconfig.bg_img_path
         self.bg = tkinter.PhotoImage(file=self.bg_path)
 
         # 移动速度
-        self.speed = (self.conf.getint("background","x_step"),self.conf.getint("background","y_step"))
+        self.speed = [myconfig.bg_x_step,myconfig.bg_y_step]
         # 移动方向
-        self.move_dir = (self.conf.getint("background","x_dir"),self.conf.getint("background","y_dir"))
+        self.move_dir = [myconfig.bg_x_dir,myconfig.bg_y_dir]
 
 
     def move(self):

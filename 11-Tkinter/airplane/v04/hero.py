@@ -2,22 +2,22 @@
     英雄机类
 '''
 from airplanewar import AirplaneWar
+from readconfig import myconfig
 import tkinter
-from configparser import ConfigParser
 
 class Hero(AirplaneWar):
     def __init__(self,canvas,x,y,position,tag,width,height,window):
         super().__init__(canvas,x,y,position,tag,width,height)
-        super().set_health(self.conf.getint("game","hero_health"))
+        super().set_health(myconfig.hero_health)
         # 图片实例
         # r_path = self.conf.get("hero","img_path")
         # self.r_hero_img = tkinter.PhotoImage(file = r_path)
         for i in range(5):
-            img_path = self.conf.get("hero","img_path_"+str(i))
+            img_path = myconfig.hero_img_path+str(i) + myconfig.hero_img_suffix
             self.hero_img = tkinter.PhotoImage(file = img_path)
             self.img_list.append(self.hero_img)
         # 移动步长
-        self.speed = [self.conf.getint("hero","x_speed"),self.conf.getint("hero","y_speed")]
+        self.speed = [myconfig.hero_x_step,myconfig.hero_y_step]
         # 移动方向
         self.dir = [0,-1]
 
@@ -30,8 +30,8 @@ class Hero(AirplaneWar):
 
     def move(self):
         # 窗口边界
-        canvas_width = self.conf.getint("interface","canvas_width")
-        canvas_height = self.conf.getint("interface","canvas_height")
+        canvas_width = myconfig.cvs_w
+        canvas_height = myconfig.cvs_h
 
 
 
@@ -69,20 +69,23 @@ class Hero(AirplaneWar):
 
     # 重置英雄机
     def reset_pos(self):
-        x = self.anchor_x - self.center_pos[0]
-        y = self.anchor_y - self.center_pos[1]
+        x = 0
+        y = 0
+        if self.anchor == "center":
+            x = self.anchor_x - self.center_pos[0]
+            y = self.anchor_y - self.center_pos[1]
+        elif self.anchor == "nw":
+            x = self.anchor_x - self.nw_pos[0]
+            y = self.anchor_y - self.ne_pos[1]
+        elif self.anchor == "ne":
+            x = self.anchor_x - self.ne_pos[0]
+            y = self.anchor_y - self.ne_pos[1]
+        elif self.anchor == "se":
+            x = self.anchor_x - self.se_pos[0]
+            y = self.anchor_y - self.se_pos[1]
+        elif self.anchor == "sw":
+            x = self.anchor_x - self.sw_pos[0]
+            y = self.anchor_y - self.sw_pos[1]
         self.enemy_move(self.tag, x, y)
-        # for i in range(5):
-        #         #     path = self.conf.get("hero", "img_path_" + str(i))
-        #         #     reset_hero_img = tkinter.PhotoImage(file=path)
-        #         #     self.img_list.append(reset_hero_img)
-        #         # self.canvas.create_image(self.anchor_x,
-        #         #                          self.anchor_y,
-        #         #                          image=self.hero_img[0],
-        #         #                          anchor=self.anchor,
-        #         #                          tags=self.tag)
-        # 更新坐标值
-        # self.update_pos(x, y)
-        # self.state = self.conf.getint("game", "status_alive")
 
 

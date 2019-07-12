@@ -3,7 +3,6 @@
         所有的对象需要展示在画布上
 '''
 import tkinter
-from configparser import ConfigParser
 import time
 import random as r
 import threading
@@ -13,6 +12,7 @@ from bullet import Bullet
 from bee import Bee
 from bigplane import BigPlane
 from smallplane import SmallPlane
+from readconfig import myconfig
 
 class Interface():
     def __init__(self):
@@ -39,126 +39,45 @@ class Interface():
         self.score = 0
 
 
-
-        # 初始化类
-        self.conf = ConfigParser()
-        self.conf.read("config.ini",encoding="UTF-8")
-        # 窗口尺寸
-        inter_size = self.conf.get("interface","inter_size")
-        # 画布宽高
-        self.cvs_w = self.conf.getint("interface","canvas_width")
-        self.cvs_h = self.conf.getint("interface", "canvas_height")
-
-        # 背景的移动速度
-        speed = (self.conf.get("background", "x_step"), self.conf.get("background", "y_step"))
-        # 背景一图片锚点位置
-        self.bg_anchor_pos_1 = self.conf.get("background", "anchor_1")
-        # 背景一图片锚点坐标
-        self.bg_anchor_x_1 = self.conf.getint("background", "anchor_x_1")
-        self.anchor_y_1 = self.conf.getint("background", "anchor_y_1")
-        # 背景二
-        self.bg_anchor_pos_2 = self.conf.get("background", "anchor_2")
-        # self.bg_anchor_x_2 = self.conf.getint("background", "anchor_x_2")
-        # self.bg_anchor_y_2 = self.conf.getint("background", "anchor_y_2")
-
-        # 背景宽高
-        self.bg_w = self.conf.getint("background", "w")
-        self.bg_h = self.conf.getint("background", "h")
-        # tag
-        self.bg1 = self.conf.get("background", "tag_1")
-        self.bg2 = self.conf.get("background", "tag_2")
-
-        # 英雄机
-        self.hero_anchor = self.conf.get("hero","anchor")
-        self.hero_anchor_x = self.conf.getint("hero","anchor_x")
-        self.hero_anchor_y = self.conf.getint("hero","anchor_y")
-        self.hero_tag = self.conf.get("hero", "tag")
-        self.hero_width = self.conf.getint("hero", "width")
-        self.hero_height = self.conf.getint("hero", "height")
-
-        # 子弹
-        self.bullet_anchor = self.conf.get("bullet", "anchor")
-        self.blt_tag = self.conf.get("bullet","tag")
-        self.bullet_width = self.conf.getint("bullet","width")
-        self.bullet_height = self.conf.getint("bullet", "height")
-        self.blt_fre = self.conf.getint("bullet","fre")
-        self.en_blt_fre = self.conf.getint("bullet","en_fre")
-        self.hero_x_dir = self.conf.getint("bullet","hero_x_dir")
-        self.hero_y_dir = self.conf.getint("bullet", "hero_y_dir")
-        self.en_x_dir = self.conf.getint("bullet", "en_x_dir")
-        self.en_y_dir = self.conf.getint("bullet", "en_y_dir")
-
-        # 小蜜蜂
-        self.bee_w = self.conf.getint("bee","width")
-        self.bee_h = self.conf.getint("bee","height")
-        self.anchor_bee = self.conf.get("bee","anchor")
-        self.bee_tag = self.conf.get("bee","tag")
-        # 小蜜蜂创建频率
-        self.bee_fre = self.conf.getint("bee", "fre")
-
-
-        # 大飞机
-        self.bigplane_tag = self.conf.get("bigplane","tag")
-        self.bigplane_w = self.conf.getint("bigplane", "width")
-        self.bigplane_h = self.conf.getint("bigplane","height")
-        self.anchor_bp = self.conf.get("bigplane","anchor")
-        # 创建大飞机频率
-        self.bp_fre = self.conf.getint("bigplane", "fre")
-
-        # 小飞机
-        self.smallplane_tag = self.conf.get("smallplane", "tag")
-        self.smallplane_w = self.conf.getint("smallplane", "width")
-        self.smallplane_h = self.conf.getint("smallplane", "height")
-        self.anchor_sp = self.conf.get("smallplane", "anchor")
-        # 创建大飞机频率
-        self.sp_fre = self.conf.getint("smallplane", "fre")
-
-        # 分数
-        self.bee_score = self.conf.getint("game","bee_score")
-        self.bp_score = self.conf.getint("game", "bp_score")
-        self.sp_score = self.conf.getint("game", "sp_score")
-        self.max_score = self.conf.get("game","max_score")
-
-
         self.window = tkinter.Tk()
         # 设置窗口尺寸
-        self.window.geometry(inter_size)
+        self.window.geometry(myconfig.inter_size)
         # 设置title
         self.window.title("打飞机")
         # 不允许拖动
         self.window.resizable(0,0)
 
         # 添加画布
-        self.cvs = tkinter.Canvas(self.window,width=self.cvs_w,height=self.cvs_h)
+        self.cvs = tkinter.Canvas(self.window,width=myconfig.cvs_w,height=myconfig.cvs_h)
         self.cvs.pack()
 
 
 
         # 创建背景图片
-        self.sky_1 = Sky(self.cvs,self.bg_anchor_x_1,self.anchor_y_1,self.bg_anchor_pos_1,
-                         self.bg1,self.bg_w,self.bg_h)
-        self.cvs.create_image(self.bg_anchor_x_1,
-                                      self.anchor_y_1,
+        self.sky_1 = Sky(self.cvs,myconfig.bg_anchor_x_1,myconfig.anchor_y_1,myconfig.bg_anchor_pos_1,
+                         myconfig.bg1,myconfig.bg_w,myconfig.bg_h)
+        self.cvs.create_image(myconfig.bg_anchor_x_1,
+                              myconfig.anchor_y_1,
                                       image=self.sky_1.bg,
-                                      anchor=self.bg_anchor_pos_1,
-                                      tags=self.bg1)
-        self.sky_2 = Sky(self.cvs, self.sky_1.nw_pos[0], self.sky_1.nw_pos[1],self.bg_anchor_pos_2,
-                         self.bg2,self.bg_w,self.bg_h)
+                                      anchor=myconfig.bg_anchor_pos_1,
+                                      tags=myconfig.bg1)
+        self.sky_2 = Sky(self.cvs, self.sky_1.nw_pos[0], self.sky_1.nw_pos[1],myconfig.bg_anchor_pos_2,
+                         myconfig.bg2,myconfig.bg_w,myconfig.bg_h)
         self.cvs.create_image(self.sky_1.nw_pos[0],
                                       self.sky_1.nw_pos[1],
                                       image=self.sky_2.bg,
-                                      anchor=self.bg_anchor_pos_2,
-                                      tags=self.bg2)
+                                      anchor=myconfig.bg_anchor_pos_2,
+                                      tags=myconfig.bg2)
 
 
         # 创建英雄机
-        self.hero = Hero(self.cvs,self.hero_anchor_x,self.hero_anchor_y,self.hero_anchor,
-                         self.hero_tag,self.hero_width,self.hero_height,self.window)
-        self.cvs.create_image(self.hero_anchor_x,
-                              self.hero_anchor_y,
+        self.hero = Hero(self.cvs,myconfig.hero_anchor_x,myconfig.hero_anchor_y,myconfig.hero_anchor,
+                         myconfig.hero_tag,myconfig.hero_width,myconfig.hero_height,self.window)
+        self.cvs.create_image(myconfig.hero_anchor_x,
+                              myconfig.hero_anchor_y,
                                image=self.hero.img_list[0],
-                               anchor=self.hero_anchor,
-                               tags = self.hero.tag)
+                               anchor=myconfig.hero_anchor,
+                               tags = myconfig.hero_tag)
 
         # 创建分数框
         self.score_text = self.cvs.create_text(15, 10,
@@ -182,102 +101,102 @@ class Interface():
     # 计分并更新计分板
     def count_score(self,en):
         # 小蜜蜂
-        if en.tag == self.bee_tag + str(self.bee_num):
-            self.score += self.bee_score
+        if en.tag == myconfig.bee_tag + str(self.bee_num):
+            self.score += myconfig.bee_score
         # 大飞机
-        elif en.tag == self.bigplane_tag + str(self.bp_num):
-            self.score += self.bp_score
+        elif en.tag == myconfig.bigplane_tag + str(self.bp_num):
+            self.score += myconfig.bp_score
         # 小飞机
         else:
-            self.score += self.sp_score
+            self.score += myconfig.sp_score
         self.cvs.itemconfigure(self.score_text,text = "分数："+str(self.score))
-
 
 
     # 创建大飞机
     def create_bigplane(self):
-        x = r.randint(self.bigplane_w,self.cvs_w - self.bigplane_w)
-        y = -self.bigplane_h/2 - 50
+        x = r.randint(myconfig.bigplane_w,myconfig.cvs_w - myconfig.bigplane_w)
+        y = -myconfig.bigplane_h/2 - 50
         self.bigplane = BigPlane(self.cvs,x, y,
-                                 self.anchor_bp,
-                                 self.bigplane_tag + str(self.bp_num),
-                                 self.bigplane_w,
-                                 self.bigplane_h)
+                                 myconfig.anchor_bp,
+                                 myconfig.bigplane_tag + str(self.bp_num),
+                                 myconfig.bigplane_w,
+                                 myconfig.bigplane_h)
         self.cvs.create_image(x, y,
-                              anchor = self.anchor_bp,
+                              anchor = myconfig.anchor_bp,
                               image = self.bigplane.img_list[0],
-                              tags = self.bigplane_tag + str(self.bp_num))
+                              tags = myconfig.bigplane_tag + str(self.bp_num))
         self.bp_num += 1
         return self.bigplane
 
 
     # 创建小飞机
     def create_smallplane(self):
-        x = r.randint(self.smallplane_w, self.cvs_w - self.smallplane_w)
-        y = -self.smallplane_h / 2 - 50
+        x = r.randint(myconfig.smallplane_w, myconfig.cvs_w - myconfig.smallplane_w)
+        y = -myconfig.smallplane_h / 2 - 50
         self.smallplane = SmallPlane(self.cvs, x, y,
-                                 self.anchor_sp,
-                                 self.smallplane_tag + str(self.sp_num),
-                                 self.smallplane_w,
-                                 self.smallplane_h)
+                                     myconfig.anchor_sp,
+                                     myconfig.smallplane_tag + str(self.sp_num),
+                                     myconfig.smallplane_w,
+                                     myconfig.smallplane_h)
         self.cvs.create_image(x, y,
-                              anchor=self.anchor_sp,
+                              anchor=myconfig.anchor_sp,
                               image=self.smallplane.img_list[0],
-                              tags=self.smallplane_tag + str(self.sp_num))
+                              tags=myconfig.smallplane_tag + str(self.sp_num))
         self.sp_num += 1
         return self.smallplane
 
 
     # 创建小蜜蜂
     def create_bee(self):
-        anchor_bee_x = r.randint(self.bee_w/2,self.cvs_w-self.bee_w/2)
+        anchor_bee_x = r.randint(myconfig.bee_w/2,myconfig.cvs_w-myconfig.bee_w/2)
         bee_x_dir = r.choice([1,-1])
-        self.bee = Bee(self.cvs, anchor_bee_x, -self.bee_h/2 - 50,
-                  self.anchor_bee, self.bee_tag + str(self.bee_num), self.bee_w,
-                  self.bee_h, bee_x_dir, self.cvs_w)
-        self.cvs.create_image(anchor_bee_x, -self.bee_h/2 - 50,
-                              anchor = self.anchor_bee,
+        self.bee = Bee(self.cvs, anchor_bee_x, -myconfig.bee_h/2 - 50,
+                       myconfig.anchor_bee, myconfig.bee_tag + str(self.bee_num), myconfig.bee_w,
+                       myconfig.bee_h, bee_x_dir, myconfig.cvs_w)
+        self.cvs.create_image(anchor_bee_x, -myconfig.bee_h/2 - 50,
+                              anchor = myconfig.anchor_bee,
                               image = self.bee.img_list[0],
-                              tags = self.bee_tag + str(self.bee_num))
+                              tags = myconfig.bee_tag + str(self.bee_num))
         self.bee_num += 1
         return self.bee
 
     # 创建英雄机子弹
     def create_bullet(self):
-        bullets = Bullet(self.cvs, self.hero.center_pos[0], self.hero.nw_pos[1] - self.bullet_height / 2,
-                         self.bullet_anchor, self.blt_tag + str(self.bullet_num),
-                         self.bullet_width, self.bullet_height, self.hero_x_dir, self.hero_y_dir)
+        bullets = Bullet(self.cvs, self.hero.center_pos[0], self.hero.nw_pos[1] - myconfig.bullet_height / 2,
+                         myconfig.bullet_anchor, myconfig.blt_tag + str(self.bullet_num),
+                         myconfig.bullet_width, myconfig.bullet_height, myconfig.hero_x_dir, myconfig.hero_y_dir)
         self.cvs.create_image(self.hero.center_pos[0],
-                              self.hero.nw_pos[1] - self.bullet_height / 2,
+                              self.hero.nw_pos[1] - myconfig.bullet_height / 2,
                               image=bullets.bullet_img,
-                              anchor=self.bullet_anchor,
-                              tags=self.blt_tag + str(self.bullet_num))
+                              anchor=myconfig.bullet_anchor,
+                              tags=myconfig.blt_tag + str(self.bullet_num))
         self.bullet_num += 1
         return bullets
 
     # 创建敌机子弹
     def create_en_bullet(self, en):
-        en_bullets = Bullet(self.cvs, en.center_pos[0], en.sw_pos[1] - self.bullet_height / 2,
-                            self.bullet_anchor, self.blt_tag + str(self.bullet_num),
-                            self.bullet_width, self.bullet_height, self.en_x_dir, self.en_y_dir)
+        en_bullets = Bullet(self.cvs, en.center_pos[0], en.sw_pos[1] - myconfig.bullet_height / 2,
+                            myconfig.bullet_anchor, myconfig.blt_tag + str(self.bullet_num),
+                            myconfig.bullet_width, myconfig.bullet_height, myconfig.en_x_dir, myconfig.en_y_dir)
         self.cvs.create_image(en.center_pos[0],
-                              en.sw_pos[1] - self.bullet_height / 2,
+                              en.sw_pos[1] - myconfig.bullet_height / 2,
                               image=en_bullets.bullet_img,
-                              anchor=self.bullet_anchor,
-                              tags=self.blt_tag + str(self.bullet_num))
+                              anchor=myconfig.bullet_anchor,
+                              tags=myconfig.blt_tag + str(self.bullet_num))
         self.bullet_num += 1
         return en_bullets
 
 
+    # 移动背景图片
     def move_sky(self):
         # 如果背景一移动到窗口的下边沿，则把背景一移动到窗口的最上方
-        if self.sky_1.nw_pos[1] >= self.cvs_h:
-            self.cvs.move(self.bg1, 0, -(self.cvs_h + self.bg_h))
-            self.sky_1.update_pos(0, -(self.cvs_h + self.bg_h))
+        if self.sky_1.nw_pos[1] >= myconfig.cvs_h:
+            self.cvs.move(myconfig.bg1, 0, -(myconfig.cvs_h + myconfig.bg_h))
+            self.sky_1.update_pos(0, -(myconfig.cvs_h + myconfig.bg_h))
         # 如果背景二移动到窗口的下边沿，则把背景二移动到窗口的最上方
-        elif self.sky_2.nw_pos[1] >= self.cvs_h:
-            self.cvs.move(self.bg2,0,-(self.cvs_h + self.bg_h))
-            self.sky_2.update_pos(0, -(self.cvs_h + self.bg_h))
+        elif self.sky_2.nw_pos[1] >= myconfig.cvs_h:
+            self.cvs.move(myconfig.bg2,0,-(myconfig.cvs_h + myconfig.bg_h))
+            self.sky_2.update_pos(0, -(myconfig.cvs_h + myconfig.bg_h))
         # 否则正常移动
         else:
             self.sky_1.move()
@@ -288,7 +207,7 @@ class Interface():
     def move_enemy(self):
         for en in self.enemy_list:
             # 超过边界删除
-            if en.nw_pos[1] > self.cvs_h:
+            if en.nw_pos[1] > myconfig.cvs_h:
                 self.enemy_list.remove(en)
                 self.cvs.delete(en.tag)
             else:
@@ -305,11 +224,12 @@ class Interface():
                 blt.move()
         for en_blt in self.en_blt_list[:]:
             # 超过边界删除
-            if en_blt.sw_pos[1] > self.cvs_h:
+            if en_blt.sw_pos[1] > myconfig.cvs_h:
                 self.en_blt_list.remove(en_blt)
                 self.cvs.delete(en_blt.tag)
             else:
                 en_blt.move()
+
     # 碰撞
     def check_collision(self):
         # 子弹和敌机相撞
@@ -322,7 +242,7 @@ class Interface():
             # 如果英雄机子弹和敌机相撞则删除敌机对象和图片
             for each_blt in self.blt_list[:]:
                 if each_blt.is_collision(en) \
-                    and en.state != en.conf.getint("game","status_dead"):
+                    and en.state != myconfig.status_dead:
                     # 更新分数计分板
                     self.count_score(en)
                     # 更新生命值
@@ -336,15 +256,14 @@ class Interface():
 
             # 如果英雄机和敌机相撞
             if en.is_collision(self.hero) \
-                   and en.state != en.conf.getint("game", "status_dead") \
-                   and self.hero.state != self.conf.getint("game","status_dead"):
+                   and en.state != myconfig.status_dead \
+                   and self.hero.state == myconfig.status_alive:
                 # 敌机更新生命值
                 en.update_health()
                 self.enemy_list.remove(en)
                 self.cvs.delete(en.tag)
                 # 英雄机更新生命值
                 self.hero.update_health()
-                # if self.hero.state == self.conf.getint("game","status_alive"):
                 # 爆炸效果
                 # self.hero.explosion(0, 0)
                 # 重置英雄机
@@ -356,7 +275,7 @@ class Interface():
 
         for en_blt in self.en_blt_list[:]:
              if en_blt.is_collision(self.hero)\
-                 and self.hero.state != self.conf.getint("game","status_dead"):
+                 and self.hero.state != myconfig.status_dead:
                  self.en_blt_list.remove(en_blt)
                  self.cvs.delete(en_blt.tag)
                  # 英雄机更新生命值
@@ -368,20 +287,66 @@ class Interface():
                  # 更新生命值计分板
                  self.cvs.itemconfigure(self.health_text, text="剩余次数：" + str(self.hero.health))
         # 如果英雄机生命值耗尽则退出
-        if self.hero.state == self.conf.getint("game", "status_dead"):
+        if self.hero.state == myconfig.status_dead:
             self.hero.play = False
 
 
     # 保存最高分
     def write_max_score(self):
-        if self.score > int(self.max_score):
-            self.conf.set("game", "max_score", str(self.score))
-            # 保存config
-            self.conf.write(open("config.ini","w"))
+        if self.score > int(myconfig.max_score):
+            myconfig.update_config("game","max_score",str(self.score))
             return self.score
         else:
-            return self.max_score
+            return myconfig.max_score
 
+
+    # 创建敌机及子弹
+    def create_enemy(self):
+        # 每1帧创建一颗英雄机子弹
+        if self.count % myconfig.blt_fre == 0:
+            bullets = self.create_bullet()
+            self.blt_list.append(bullets)
+
+        # 每50帧创建一颗敌机子弹
+        if self.count % myconfig.en_blt_fre == 0:
+            for en in self.enemy_list:
+                if en.tag != myconfig.bee_tag + str(self.bee_num):
+                    en_bullets = self.create_en_bullet(en)
+                    self.en_blt_list.append(en_bullets)
+
+        # 每35帧创建一个小蜜蜂
+        if self.count % myconfig.bee_fre == 0:
+            bees = self.create_bee()
+            self.enemy_list.append(bees)
+
+        # 每100帧创建一个大飞机
+        if self.count % myconfig.bp_fre == 0:
+            bps = self.create_bigplane()
+            self.enemy_list.append(bps)
+
+        # 每20帧创建一个小飞机
+        if self.count % myconfig.sp_fre == 0:
+            sps = self.create_smallplane()
+            self.enemy_list.append(sps)
+
+
+    # 结束游戏,打印分数
+    def end_game(self):
+        self.cvs.create_text(200, 350, fill="green",
+                             text="游戏结束！\r\n当前成绩：{0}\r\n最高成绩：{1}".format(self.score, self.write_max_score()),
+                             font=["宋体", 20])
+
+
+    # 退出游戏
+    def quit_game(self):
+        self.cvs.quit()
+
+    # 接收键盘事件
+    def recv_event(self, e):
+        if e.keysym == "Return":  # 按回车键开始游戏
+            self.start_game()
+        elif e.keysym == "Escape":  # Esc退出游戏
+            self.quit_game()
 
 
     # 开始游戏
@@ -397,34 +362,8 @@ class Interface():
             # 碰撞检测
             self.check_collision()
 
-            self.window.update()
-
-            # 每1帧创建一颗英雄机子弹
-            if self.count % self.blt_fre == 0:
-                bullets = self.create_bullet()
-                self.blt_list.append(bullets)
-
-            # 每4帧创建一颗敌机子弹
-            if self.count % self.en_blt_fre == 0:
-                for en in self.enemy_list:
-                    if en.tag != self.bee_tag + str(self.bee_num):
-                        en_bullets = self.create_en_bullet(en)
-                        self.en_blt_list.append(en_bullets)
-
-            # 每30帧创建一个小蜜蜂
-            if self.count % self.bee_fre == 0:
-                bees = self.create_bee()
-                self.enemy_list.append(bees)
-
-            # 每70帧创建一个大飞机
-            if self.count % self.bp_fre == 0:
-                bps = self.create_bigplane()
-                self.enemy_list.append(bps)
-
-            # 每10帧创建一个小飞机
-            if self.count % self.sp_fre == 0:
-                sps = self.create_smallplane()
-                self.enemy_list.append(sps)
+            # 创建敌机及子弹
+            self.create_enemy()
 
             self.count += 1
 
@@ -433,30 +372,6 @@ class Interface():
             self.end_game()
 
         self.cvs.after(50, self.start_game)
-
-    # 结束游戏,打印分数
-    def end_game(self):
-        self.cvs.create_text(200, 350, fill="green",
-                             text="游戏结束！\r\n当前成绩：{0}\r\n最高成绩：{1}".format(self.score,self.write_max_score()),
-                             font = ["宋体",20])
-
-    # def restart_game(self):
-    #     # self.hero.play = True
-    #     self.__init__()
-
-    # 退出游戏
-    def quit_game(self):
-        self.cvs.quit()
-
-    # 接收事件
-    def recv_event(self,e):
-        if e.keysym == "Return": # 按回车键开始游戏
-            self.start_game()
-        elif e.keysym == "Escape": # Esc退出游戏
-            self.quit_game()
-        # elif e.keysym == "space": # 空格重新开始
-        #     self.restart_game()
-
 
 
 if __name__ == '__main__':
